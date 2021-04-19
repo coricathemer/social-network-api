@@ -10,12 +10,12 @@ const ReactionSchema = new Schema(
     },
     reactionBody: {
       type: String,
-      required: true
+      required: true, 
+      max: 280
     },
-    writtenBy: {
+    username: {
       type: String,
       required: true,
-      trim: true
     },
     createdAt: {
       type: Date,
@@ -32,18 +32,20 @@ const ReactionSchema = new Schema(
 
 const ThoughtSchema = new Schema(
   {
-    writtenBy: {
+    thoughtText: {
       type: String, 
-      required: true
-    }, 
-    thoughtBody: {
-      type: String, 
-      required: true
+      required: true,
+      min: 1, 
+      max: 280
     }, 
     createdAt: {
       type: Date, 
       default: Date.now, 
       get: createdAtVal => dateFormat(createdAtVal)
+    }, 
+    username: {
+      type: String, 
+      required: true
     }, 
     reactions: [ReactionSchema]
   }, 
