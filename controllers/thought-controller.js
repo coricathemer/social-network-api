@@ -1,6 +1,32 @@
 const { Thought, User } = require('../models');
 
 const thoughtController = {
+  getAllThoughts(req, res) {
+    Thought.find()
+      .populate({ path: "reactions", select: "-__v" })
+      .select("-__v")
+      .then((data) => {
+        res.json(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
+  },
+
+  getThoughtById({ params }, res) {
+    Thought.findOne({ _id: params.id })
+      .populate({ path: "reactions", select: "-__v" })
+      .select("-__v")
+      .then((data) => {
+        res.json(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
+  },
+
   addThought({ params, body }, res){
     Thought.create(body)
       .then(({_id})=>{
@@ -58,7 +84,6 @@ const thoughtController = {
       })
       .catch(err => res.json(err));
   },
-
 
   removeReaction({ params }, res) {
     Thought.findOneAndUpdate(
